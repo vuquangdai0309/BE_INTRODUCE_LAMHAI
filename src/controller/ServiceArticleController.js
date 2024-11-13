@@ -49,7 +49,6 @@ class ServiceArticleController {
   async UpdateServiceArticle(req, res) {
     try {
       const id = req.params.id;
-      console.log(req.body);
       await ServiceArticleModel.updateServiceArticle(id, { ...req.body });
       res.status(200).json({ message: "Sửa bản ghi thành công" });
     } catch (error) {
