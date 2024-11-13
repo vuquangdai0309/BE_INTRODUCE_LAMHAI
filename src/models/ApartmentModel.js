@@ -1,14 +1,31 @@
 import connection from "../config/db";
+import ArticleModel from "./ArticleModel";
 const ApartmentModel = {
   // lấy tất cả
   GetAllApartment: () => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM apartment WHERE is_deleted = 0`;
-      connection.query(query, (err, results) => {
+      const query = `SELECT a.*
+      FROM apartment a
+      WHERE a.is_deleted = 0`;
+      connection.query(query, async (err, results) => {
         if (err) {
-          reject(err);
+          return reject(err);
         } else {
-          resolve(results);
+          if(results.length === 0){
+            return reject(err);
+          }
+          const newArr = []
+          for (const apartment of results) {
+            const { id, ...data } = apartment
+            const listArticleByApartmentId = await ArticleModel.GetArticle_ByApartment(id)
+            const newData = {
+              id: id,
+              ...data,
+              listArticle: listArticleByApartmentId
+            }
+            newArr.push(newData)
+          }
+          return resolve(newArr);
         }
       });
     });

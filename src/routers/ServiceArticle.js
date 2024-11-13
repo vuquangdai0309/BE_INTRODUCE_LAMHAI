@@ -6,13 +6,13 @@ import upload from "../middlewares/upload";
 //DELETE
 router.delete(
   "/:id/delete-service-article",
-  checkToken,
+  // checkToken,
   ServiceArticleController.DeleteServiceArticle
 );
 //PATCH
 router.patch(
   "/:id/update-service-article",
-  checkToken,
+  // checkToken,
   upload.single("image"),
   ServiceArticleController.UpdateServiceArticle
 );
@@ -20,7 +20,7 @@ router.patch(
 //POST
 router.post(
   "/create-service-article",
-  checkToken,
+  // checkToken,
   upload.single("image"),
   ServiceArticleController.CreateServiceArticle
 );

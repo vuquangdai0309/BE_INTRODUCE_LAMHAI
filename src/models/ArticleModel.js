@@ -1,9 +1,14 @@
 import connection from "../config/db";
+import ServiceArticleModel from "./ServiceArticleModel";
 const ArticleModel = {
   // lấy tất cả
   GetAllArticle: () => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM article WHERE is_deleted = 0`;
+      const query = `SELECT a.*,
+      ap.name AS apartment_name
+      FROM article a
+      JOIN apartment ap ON ap.id = a.apartment_id
+      WHERE a.is_deleted = 0`;
       connection.query(query, (err, results) => {
         if (err) {
           reject(err);
@@ -20,14 +25,23 @@ const ArticleModel = {
       SELECT article.*,
       service_article.name AS name_service_article
       FROM article
-      JOIN service_article ON article.id = service_article.article_id
-      WHERE article.is_deleted = 0 AND article.id = ?
+      LEFT JOIN service_article ON service_article.article_id = article.id  
+      WHERE article.is_deleted = 0 AND article.id = ${id}
       `;
-      connection.query(query, id, (err, results) => {
+      connection.query(query, async (err, results) => {
         if (err) {
-          reject(err);
+          return reject(err);
         } else {
-          resolve(results);
+          if (results.length === 0) {
+            return reject(err)
+          }
+          const getOneArticle = results[0]
+          const listService = await ServiceArticleModel.GetService_ByArticle(getOneArticle.id)
+          const newData = {
+            ...getOneArticle,
+            listService: listService
+          }
+          return resolve(newData);
         }
       });
     });
@@ -35,12 +49,26 @@ const ArticleModel = {
   // lấy theo apartment
   GetArticle_ByApartment: (apartment) => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM article WHERE apartment_id = ? AND is_deleted = 0`;
-      connection.query(query, apartment, (err, results) => {
+      const query = `SELECT a.* 
+      FROM article a  
+      WHERE 
+      a.apartment_id = ${apartment} AND a.is_deleted = 0`;
+      connection.query(query, async (err, results) => {
         if (err) {
-          reject(err);
+          return reject(err);
         } else {
-          resolve(results);
+          const newArr = []
+          for (const article of results) {
+            const { id, ...data } = article
+            const listServiceArticle = await ServiceArticleModel.GetService_ByArticle(id)
+            const newData = {
+              id: id,
+              ...data,
+              listService: listServiceArticle
+            }
+            newArr.push(newData)
+          }
+          return resolve(newArr);
         }
       });
     });

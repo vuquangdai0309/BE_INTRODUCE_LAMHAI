@@ -6,19 +6,19 @@ import checkToken from "../middlewares/checkToken";
 //DELETE
 router.delete(
   "/:id/delete-apartment",
-  checkToken,
+  // checkToken,
   ApartmentController.DeleteApartment
 );
 //PATCH
 router.patch(
   "/:id/update-apartment",
-  checkToken,
+  // checkToken,
   ApartmentController.UpdateApartment
 );
 //POST
 router.post(
   "/create-apartment",
-  checkToken,
+  // checkToken,
   ApartmentController.CreateApartment
 );
 //GET

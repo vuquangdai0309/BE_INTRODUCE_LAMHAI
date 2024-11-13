@@ -15,23 +15,7 @@ class ArticleController {
     try {
       const id = req.params.id;
       const article = await ArticleModel.GetOneArticle(id);
-      const articleMap = new Map();
-      article.forEach((element) => {
-        if (!articleMap.has(element.id)) {
-          articleMap.set(element.id, {
-            id: element.id,
-            apartment_id: element.apartment_id,
-            title: element.title,
-            describle: element.describle,
-            image: element.image,
-            service_article: [],
-          });
-        }
-        const getArticle = articleMap.get(element.id);
-        getArticle.service_article.push(element.name_service_article);
-      });
-      const data = Array.from(articleMap.values());
-      res.status(200).json(data);
+      return res.status(200).json(article);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Lỗi truy vấn" });
@@ -51,10 +35,12 @@ class ArticleController {
   //[POST]
   async CreateArticle(req, res) {
     try {
+    
       const form = {
         ...req.body,
-        image: req.file.path,
+        image: req.file ? req.file.path : "",
       };
+    
       await ArticleModel.createArticle(form);
       res.status(200).json({ message: "Thêm bản ghi thành công" });
     } catch (error) {
@@ -65,7 +51,7 @@ class ArticleController {
   //[PUT]
   async UpdateArticle(req, res) {
     try {
-      const id = req.params.id;
+      const id = req.body.id;
       const form = {
         ...req.body,
         image: req.file ? req.file.path : req.body.image,

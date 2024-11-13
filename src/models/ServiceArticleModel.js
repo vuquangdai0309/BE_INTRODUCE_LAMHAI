@@ -3,7 +3,13 @@ const ServiceArticleModel = {
   // lấy tất cả
   GetAllServiceArticle: () => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM service_article WHERE is_deleted = 0`;
+      const query = `SELECT sa.*,
+      ap.name AS apartment_name,
+      ap.id AS apartment_id
+      FROM service_article sa
+      JOIN article a ON a.id = sa.article_id
+      JOIN apartment ap ON ap.id = a.apartment_id
+      WHERE sa.is_deleted = 0`;
       connection.query(query, (err, results) => {
         if (err) {
           reject(err);
@@ -16,7 +22,12 @@ const ServiceArticleModel = {
   // lấy 1
   GetOneServiceArticle: (id) => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT * FROM service_article WHERE id = ? AND is_deleted = 0`;
+      const query = `SELECT sa.*,
+      ap.name AS apartment_name
+      FROM  service_article sa
+      JOIN article a ON a.id = sa.article_id
+      JOIN apartment ap ON ap.id = a.apartment_id
+      WHERE sa.id = ? AND sa.is_deleted = 0`;
       connection.query(query, id, (err, results) => {
         if (err) {
           reject(err);

@@ -15,7 +15,7 @@ class ApartmentController {
     try {
       const id = req.params.id;
       const apartment = await ApartmentModel.GetOneApartment(id);
-      res.status(200).json({ apartment: apartment[0] });
+      res.status(200).json(apartment[0]);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Lỗi truy vấn" });

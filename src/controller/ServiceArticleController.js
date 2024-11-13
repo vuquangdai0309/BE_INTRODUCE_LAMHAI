@@ -17,7 +17,7 @@ class ServiceArticleController {
       const service_article = await ServiceArticleModel.GetOneServiceArticle(
         id
       );
-      res.status(200).json({ service_article: service_article[0] });
+      res.status(200).json(service_article[0]);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Lỗi truy vấn" });

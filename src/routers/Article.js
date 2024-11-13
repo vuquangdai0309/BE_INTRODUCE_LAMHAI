@@ -6,20 +6,20 @@ import upload from "../middlewares/upload";
 //DELETE
 router.delete(
   "/:id/delete-article",
-  checkToken,
+  // checkToken,
   ArticleController.DeleteArticle
 );
 //PATCH
 router.patch(
-  "/:id/update-article",
-  checkToken,
+  "/update-article",
+  // checkToken,
   upload.single("image"),
   ArticleController.UpdateArticle
 );
 //POST
 router.post(
   "/create-article",
-  checkToken,
+  // checkToken,
   upload.single("image"),
   ArticleController.CreateArticle
 );

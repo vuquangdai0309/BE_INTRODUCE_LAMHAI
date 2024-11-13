@@ -15,7 +15,7 @@ class ServiceController {
     try {
       const id = req.params.id;
       const service = await ServiceModel.GetOneService(id);
-      res.status(200).json({ service: service[0] });
+      res.status(200).json(service[0]);
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Lỗi truy vấn" });
@@ -38,12 +38,14 @@ class ServiceController {
   //[PUT]
   async UpdateService(req, res) {
     try {
-      const id = req.params.id;
+      console.log(req.body)
+      const id = req.body.id;
       const form = {
         ...req.body,
         image: req.file ? req.file.path : req.body.image,
       };
-      console.log(form)
+      console.log(`req.body:`,req.body)
+      console.log(`form:`,form)
       await ServiceModel.updateService(id, form);
       res.status(200).json({ message: "Sửa bản ghi thành công" });
     } catch (error) {
