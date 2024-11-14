@@ -14,10 +14,10 @@ class ContactController {
   async CreateContact(req, res) {
     try {
       await ContactModel.createContact(req.body)
-      return res.status(201).json({ message: "Thêm bản ghi thành công" });
+      return res.status(201).json({ message: "Đã gửi thành công , chúng tôi sẽ sớm liên hệ bạn!" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Lỗi truy vấn" });
+      res.status(500).json({ message: "Gửi không thành công" });
     }
   }
   //[PUT]

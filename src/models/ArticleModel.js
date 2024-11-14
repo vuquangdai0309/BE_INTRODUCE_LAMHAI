@@ -23,9 +23,11 @@ const ArticleModel = {
     return new Promise((resolve, reject) => {
       const query = `
       SELECT article.*,
-      service_article.name AS name_service_article
+      service_article.name AS name_service_article,
+      a.Name AS apartment_name
       FROM article
       LEFT JOIN service_article ON service_article.article_id = article.id  
+      JOIN apartment a ON a.id = article.apartment_id 
       WHERE article.is_deleted = 0 AND article.id = ${id}
       `;
       connection.query(query, async (err, results) => {
