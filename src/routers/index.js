@@ -4,6 +4,7 @@ import ApartmentRouter from "../routers/Apartment";
 import ArticleRouter from "../routers/Article";
 import ServiceArticleRouter from "../routers/ServiceArticle";
 import ContactRouter from "../routers/Contact";
+import BannerRouter from "../routers/Banner";
 function route(app) {
   app.use("/api", ServicedRouter);
   app.use("/api", AccountRouter);
@@ -11,5 +12,6 @@ function route(app) {
   app.use("/api", ArticleRouter);
   app.use("/api", ServiceArticleRouter);
   app.use("/api", ContactRouter);
+  app.use("/api", BannerRouter);
 }
 export default route;
